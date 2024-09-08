@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card shadow-lg border-0 p-4" style="max-width: 500px; width: 100%;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Login</h3>
+            <p class="lead text-center">Already have an account? Login below.</p>
+
+            <!-- Display form errors -->
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>{{ error|escape }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ error|escape }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Form fields -->
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="id_{{ field.name }}" class="form-label">{{ field.label }}</label>
+                        <input type="{{ field.field.widget.input_type }}"
+                               class="form-control"
+                               name="{{ field.name }}"
+                               id="id_{{ field.name }}"
+                               placeholder="{{ field.field.widget.attrs.placeholder }}">
+                    </div>
+                {% endfor %}
+
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-sign-in"></i> Log in
+                    </button>
+                </div>
+            </form>
+            
+           
+        </div>
+    </div>
+</div>
+
+{% endblock %}

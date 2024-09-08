@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+    Confirm Job Deletion
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>Are you sure?</h2>
+                    <p>Do you really want to delete the job <strong>{{ object.title }}</strong>? This process cannot be undone.</p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg mt-3">Yes, delete it</button>
+                        <a href="{% url 'jobs:employer-dashboard' %}" class="btn btn-secondary btn-lg mt-3">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

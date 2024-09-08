@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    All jobs
+{% endblock %}
+
+{% block content %}
+
+    <section class="job-form-section job-form-section--compressed">
+        <div class="container">
+            <h4 class="heading">Find a <span class="accent">job </span> you will <span class="accent">love</span></h4>
+            <section class="job-search-section py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="search-box p-4 bg-white shadow rounded">
+                    <h2 class="heading text-center mb-4 font-weight-bold">
+                        Find Your <span class="text-primary">Perfect Job</span>
+                    </h2>
+                    <form id="job-main-form" method="get" action="{% url 'jobs:searh' %}" class="job-main-form">
+                        <div class="controls">
+                            <div class="row align-items-center">
+                                <!-- Position Input -->
+                                <div class="col-md-5">
+                                    <div class="form-group mb-3">
+                                        <input type="text" id="profession" name="position" placeholder="What job are you looking for?" class="form-control form-control-lg" />
+                                    </div>
+                                </div>
+                                <!-- Location Input -->
+                                <div class="col-md-5">
+                                    <div class="form-group mb-3">
+                                        <input type="text" id="location" name="location" placeholder="Location (City or Region)" class="form-control form-control-lg" />
+                                    </div>
+                                </div>
+                                <!-- Search Button -->
+                                <div class="col-md-2 d-flex align-items-center">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                        <i class="fa fa-search"></i> Search
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Voice Search Section -->
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="language-select" class="sr-only">Language for Voice Search</label>
+                                    <select id="language-select" class="form-control form-control-lg">
+                                        <option value="en-US">English</option>
+                                        <option value="hi-IN">Hindi</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button id="voice-search-btn" type="button" class="btn btn-outline-primary btn-lg">
+                                        <i class="fa fa-microphone"></i> Voice Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <h3 class="heading">We have found <span class="accent">{{ jobs.count }}</span> jobs</h3>
+            {% for job in jobs %}
+                <div class="job-listing  ">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img src="{% static 'img/dcompany-1.png' %}"
+                                         alt="Ipsioou " class="img-fluid">
+                                </div>
+                                <div class="col-10">
+                                    <h4 class="job__title"><a
+                                            href="{% url 'jobs:jobs-detail' job.id %}">{{ job.title }}</a></h4>
+                                    <p class="job__company">
+                                        {{ job.company_name }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-10 col-md-3 col-lg-2 ml-auto"><i class="fa fa-map-marker job__location"></i>
+                            {{ job.location }}
+                        </div>
+                        <div class="col-10 col-md-3 col-lg-3 ml-auto">
+                            <p>Posted {{ job.created_at|timesince }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% if is_paginated %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-4 mb-4">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a href="?page={{ page_obj.previous_page_number }}"
+                                           class="page-link">&laquo;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link">&laquo;</a>
+                                    </li>
+                                {% endif %}
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                        <li class="page-item active">
+                                            <a class="page-link">{{ i }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a href="?page={{ page_obj.next_page_number }}" class="page-link">&raquo;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link">&raquo;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+  <script src="{% static 'js/voice.js' %}"></script>
+
+
+{% endblock %}
